@@ -13,6 +13,7 @@ class DynArr
     DynArr();
     ~DynArr();
     T& operator[](size_t);
+    void add(size_t);
     size_t size();
 };
 
@@ -49,15 +50,13 @@ T& DynArr<T, initLen>::operator[] (size_t index) {
   T* pNewArr;
 
   if (index >= m_len) {
-    const size_t newLen = index * 2;
-    m_len = newLen;
-
-    pNewArr = new T[newLen];
+    m_len = index * 2;
+    pNewArr = new T[m_len];
 
     for (size_t i = 0; i < m_nextIndex; i++)
       pNewArr[i] = m_pArr[i];
 
-    for (size_t j = m_nextIndex; j < newLen; j++)
+    for (size_t j = m_nextIndex; j < m_len; j++)
       pNewArr[j] = 0;
 
     delete []m_pArr;
@@ -68,6 +67,27 @@ T& DynArr<T, initLen>::operator[] (size_t index) {
     m_nextIndex = index + 1;
 
   return *(m_pArr + index);
+}
+
+template <class T, size_t initLen>
+void DynArr<T, initLen>::add(size_t val) {
+  T* pNewArr;
+
+  if (m_nextIndex == m_len) {
+    m_len = m_len * 2;
+    pNewArr = new T[m_len];
+
+    for (size_t i = 0; i < m_nextIndex; i++)
+      pNewArr[i] = m_pArr[i];
+
+    for (size_t j = m_nextIndex; j < m_len; j++)
+      pNewArr[j] = 0;
+
+    delete []m_pArr;
+    m_pArr = pNewArr;
+  }
+
+  m_pArr[m_nextIndex++] = val;
 }
 
 template <class T, size_t initLen>
@@ -85,9 +105,12 @@ int main() {
   fib[5] = 8;
   std::cout << "now fib[5] = " << fib[5] << std::endl;
 
-  fib[7] = 20;
+  fib[7] = 21;
   std::cout << std::endl << "now fib[7] = " << fib[7] << std::endl;
   std::cout << "now size of fib[] is " << fib.size() << std::endl;
+
+  fib.add(34);
+  std::cout << fib[8] << " is added to the end of the array";
 
   return 0;
 }
