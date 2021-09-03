@@ -1,82 +1,82 @@
 #include <iostream>
 #include <initializer_list>
 
-template <class T, size_t init_len = 10>
-class dynamic_array {
-  private:
-    T *ptr_arr;
-    size_t next_index;
-    size_t len;
+template <class T, size_t initLen = 10>
+class DynArr
+{
+  T* m_pArr;
+  size_t m_nextIndex;
+  size_t m_len;
 
   public:
-    dynamic_array(std::initializer_list<T>);
-    dynamic_array();
-    ~dynamic_array();
+    DynArr(std::initializer_list<T>);
+    DynArr();
+    ~DynArr();
     T& operator[](size_t);
     size_t size();
 };
 
-template <class T, size_t init_len>
-dynamic_array<T, init_len>::dynamic_array() {
-  len = init_len;
-  next_index = 0;
-  ptr_arr = new T[len];
+template <class T, size_t initLen>
+DynArr<T, initLen>::DynArr() {
+  m_len = initLen;
+  m_nextIndex = 0;
+  m_pArr = new T[m_len];
 
-  for (size_t i = 0; i < len; i++)
-    ptr_arr[i] = 0;
+  for (size_t i = 0; i < m_len; i++)
+    m_pArr[i] = 0;
 }
 
-template <class T, size_t init_len>
-dynamic_array<T, init_len>::dynamic_array(std::initializer_list<T> list) {
-  len = list.size();
-  next_index = 0;
-  ptr_arr = new T[len];
+template <class T, size_t initLen>
+DynArr<T, initLen>::DynArr(std::initializer_list<T> list) {
+  m_len = list.size();
+  m_nextIndex = 0;
+  m_pArr = new T[m_len];
 
   size_t i = 0;
   for (size_t e : list) {
-    ptr_arr[i] = e;
+    m_pArr[i] = e;
     i++;
   }
 }
 
-template <class T, size_t init_len>
-dynamic_array<T, init_len>::~dynamic_array() {
-  delete [] ptr_arr;
+template <class T, size_t initLen>
+DynArr<T, initLen>::~DynArr() {
+  delete []m_pArr;
 }
 
-template <class T, size_t init_len>
-T& dynamic_array<T, init_len>::operator[] (size_t index) {
-  T *ptr_new_arr;
+template <class T, size_t initLen>
+T& DynArr<T, initLen>::operator[] (size_t index) {
+  T* pNewArr;
 
-  if (index >= len) {
-    const size_t new_len = index * 2;
-    len = new_len;
+  if (index >= m_len) {
+    const size_t newLen = index * 2;
+    m_len = newLen;
 
-    ptr_new_arr = new T[new_len];
+    pNewArr = new T[newLen];
 
-    for (size_t i = 0; i < next_index; i++)
-      ptr_new_arr[i] = ptr_arr[i];
+    for (size_t i = 0; i < m_nextIndex; i++)
+      pNewArr[i] = m_pArr[i];
 
-    for (size_t j = next_index; j < new_len; j++)
-      ptr_new_arr[j] = 0;
+    for (size_t j = m_nextIndex; j < newLen; j++)
+      pNewArr[j] = 0;
 
-    delete []ptr_arr;
-    ptr_arr = ptr_new_arr;
+    delete []m_pArr;
+    m_pArr = pNewArr;
   }
 
-  if (index > next_index)
-    next_index = index + 1;
+  if (index > m_nextIndex)
+    m_nextIndex = index + 1;
 
-  return *(ptr_arr + index);
+  return *(m_pArr + index);
 }
 
-template <class T, size_t init_len>
-size_t dynamic_array<T, init_len>::size () {
-  return len;
+template <class T, size_t initLen>
+size_t DynArr<T, initLen>::size () {
+  return m_len;
 }
 
 int main() {
-  dynamic_array<int> fib = {1, 1, 2, 3, 5, 7, 13};
+  DynArr<int> fib {1, 1, 2, 3, 5, 7, 13};
 
   std::cout << "size of fib[] is " << fib.size() << std::endl;
   for (size_t i = 0; i < fib.size(); i++)
