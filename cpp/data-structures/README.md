@@ -6,6 +6,7 @@ make TARGET=<file_name_without_extension>
 
 The available implementations are:
 - `dynamic_array`
+- `singly_linked_list`
 
 For example, to build the dynamic array file, run:
 ```bash
