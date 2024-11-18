@@ -1,24 +1,21 @@
-#include <iostream>
 #include <initializer_list>
+#include <iostream>
 
-template <class T, size_t initLen = 10>
-class DynArr
-{
-  T* m_pArr;
+template <class T, size_t initLen = 10> class DynArr {
+  T *m_pArr;
   size_t m_nextIndex;
   size_t m_len;
 
-  public:
-    DynArr(std::initializer_list<T>);
-    DynArr();
-    ~DynArr();
-    T& operator[](size_t);
-    void add(size_t);
-    size_t size();
+public:
+  DynArr(std::initializer_list<T>);
+  DynArr();
+  ~DynArr();
+  T &operator[](size_t);
+  void add(size_t);
+  size_t size();
 };
 
-template <class T, size_t initLen>
-DynArr<T, initLen>::DynArr() {
+template <class T, size_t initLen> DynArr<T, initLen>::DynArr() {
   m_len = initLen;
   m_nextIndex = 0;
   m_pArr = new T[m_len];
@@ -40,14 +37,13 @@ DynArr<T, initLen>::DynArr(std::initializer_list<T> list) {
   }
 }
 
-template <class T, size_t initLen>
-DynArr<T, initLen>::~DynArr() {
-  delete []m_pArr;
+template <class T, size_t initLen> DynArr<T, initLen>::~DynArr() {
+  delete[] m_pArr;
 }
 
 template <class T, size_t initLen>
-T& DynArr<T, initLen>::operator[] (size_t index) {
-  T* pNewArr;
+T &DynArr<T, initLen>::operator[](size_t index) {
+  T *pNewArr;
 
   if (index >= m_len) {
     m_len = index * 2;
@@ -59,7 +55,7 @@ T& DynArr<T, initLen>::operator[] (size_t index) {
     for (size_t j = m_nextIndex; j < m_len; j++)
       pNewArr[j] = 0;
 
-    delete []m_pArr;
+    delete[] m_pArr;
     m_pArr = pNewArr;
   }
 
@@ -69,9 +65,8 @@ T& DynArr<T, initLen>::operator[] (size_t index) {
   return *(m_pArr + index);
 }
 
-template <class T, size_t initLen>
-void DynArr<T, initLen>::add(size_t val) {
-  T* pNewArr;
+template <class T, size_t initLen> void DynArr<T, initLen>::add(size_t val) {
+  T *pNewArr;
 
   if (m_nextIndex == m_len) {
     m_len = m_len * 2;
@@ -83,20 +78,19 @@ void DynArr<T, initLen>::add(size_t val) {
     for (size_t j = m_nextIndex; j < m_len; j++)
       pNewArr[j] = 0;
 
-    delete []m_pArr;
+    delete[] m_pArr;
     m_pArr = pNewArr;
   }
 
   m_pArr[m_nextIndex++] = val;
 }
 
-template <class T, size_t initLen>
-size_t DynArr<T, initLen>::size () {
+template <class T, size_t initLen> size_t DynArr<T, initLen>::size() {
   return m_len;
 }
 
 int main() {
-  DynArr<int> fib {1, 1, 2, 3, 5, 7, 13};
+  DynArr<int> fib{1, 1, 2, 3, 5, 7, 13};
 
   std::cout << "size of fib[] is " << fib.size() << std::endl;
   for (size_t i = 0; i < fib.size(); i++)
